@@ -8,7 +8,7 @@ library(shinyWidgets) # To use HTML codes in Dashboard.
 theme_set(theme_bw()) # To Set the general theme.
 
 # Set the working directory to a folder called "data" within your project
-setwd("ShopperProfiles") 
+setwd("ShopperProfile") 
 
 # Now, any file operations within your script will be relative to this directory
 data.frame <- read.csv("shopper_profile.csv")
