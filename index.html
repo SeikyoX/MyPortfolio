@@ -3,41 +3,75 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Shiny App</title>
+  <title>My Shiny Projects</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      text-align: center;
       margin: 0;
-      padding: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
     }
     .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fff;
       padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
-    iframe {
-      border: none;
-      width: 100%;
-      height: 80vh;
+    h1, h2 {
+      color: #333;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 5px;
     }
-    @media (max-width: 600px) {
-      iframe {
-        height: 60vh;
-      }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 15px;
+    }
+    a {
+      color: #0073e6;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <h1>Welcome to My Shiny App</h1>
-    <p>Below is the embedded Shiny App.</p>
-    
-    <!-- Replace the URL with your Shiny app's deployment link -->
-    <iframe src=" https://seikyo.shinyapps.io/ShopperProfile/" allowfullscreen>
-      Your browser doesn't support iframes.
-    </iframe>
+    <h1>My Data Analytic Projects</h1>
+    <p>Please see my Completed Data Analytics Projects below.</p>
 
-    <p><a href=" https://seikyo.shinyapps.io/ShopperProfile/" target="_blank">Open the app in a new tab</a></p>
+    <h2>2024</h2>
+    <ul>
+      <li>
+        <h3><a href="https://seikyo.shinyapps.io/ShopperProfile/" target="_blank">Shopper Profile</a></h3>
+        <p>Description: This is a Shiny dashboard to showcase Shopper Profile in Singapore.</p>
+      </li>
+      <li>
+        <h3><a href="https://seikyo.shinyapps.io/ShopperProfile/" target="_blank">Shiny App 2</a></h3>
+        <p>Description: This app helps users visualize trends in XYZ datasets.</p>
+      </li>
+    </ul>
+
+    <h2>2023</h2>
+    <ul>
+      <li>
+        <h3><a href="https://your-shiny-app3-url.com" target="_blank">Shiny App 3</a></h3>
+        <p>Description: This app simulates different outcomes for data sets based on various parameters.</p>
+      </li>
+    </ul>
+
+    <h2>2022</h2>
+    <ul>
+      <li>
+        <h3><a href="https://your-shiny-app4-url.com" target="_blank">Shiny App 4</a></h3>
+        <p>Description: A Shiny app built for analyzing historical stock market data.</p>
+      </li>
+    </ul>
   </div>
 
 </body>
