@@ -7,7 +7,10 @@ library(shinydashboard) # To create a dashboard
 library(shinyWidgets) # To use HTML codes in Dashboard.
 theme_set(theme_bw()) # To Set the general theme.
 
-# Now, any file operations within your script will be relative to this directory
+#Set Working Directory
+setwd("C:/Users/seiky/OneDrive/Documents/GitHub/SeikyoX/ShopperProfile/")
+
+# Import CSV files instead of SQL
 data.frame <- read.csv("shopper_profile.csv")
 
 # To review the class types for each variables.
