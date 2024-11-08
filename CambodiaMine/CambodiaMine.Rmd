@@ -1,0 +1,769 @@
+---
+title: "The Legacy of Civil War:Landmines, ERWs, and Their Effects on Cambodian Communities"
+author: "Alvin Lim"
+date: 29-Sep-2024
+output: 
+  html_document
+---
+
+```{r setup, include=FALSE}
+# Remove all codes, console, warning from showing during export.
+knitr::opts_chunk$set(echo = FALSE ,message=FALSE,warning=FALSE)
+# Change the default plot size
+knitr::opts_chunk$set(fig.asp=0.8, fig.width = 10) 
+```
+
+```{r load.library,include=FALSE}
+#Load Required Libraries
+library(tidyverse) # To create plots and manage dataframe.
+library(sf) # To read and plot simple features data frame
+library(ggrepel) # To include labels
+library(treemapify) # To plot Treemap
+library(RColorBrewer) # To set colour palette.
+theme_set(theme_bw()) # To Set the general theme.
+# To define the fixed palette for all plots.
+scale_colour_brewer_d <- function(..., palette = "Paired") {
+  scale_colour_brewer(..., palette = palette )
+}
+scale_fill_brewer_d <- function(..., palette = "Paired") {
+  scale_fill_brewer(..., palette = palette)
+}
+
+options(
+  ggplot2.discrete.colour = scale_colour_brewer_d,
+  ggplot2.discrete.fill = scale_fill_brewer_d
+)
+
+#Set Working Directory
+setwd("C:/Users/seiky/OneDrive/Documents/GitHub/SeikyoX/CambodiaMine/")
+
+```
+
+# Executive Summary
+
+|       This report examines landmine and Explosive Remnants of War (ERW) incidents in Cambodia, focusing on their geographic distribution and the effectiveness of clearance efforts. Utilizing two datasets (landmine incidents and fear levels reported by clearing operators), the study highlights critical patterns affecting local safety and development.
+
+|       Our key findings indicated landmine incidents are concentrated in Cambodia's northwestern regions near the Thai border and around Phnom Penh, historically conflict-heavy zones. Despite significant efforts by organizations like CMAC and The HALO Trust, landmines continue to pose serious risks to the people, particularly in foraging areas, rice fields, and villages, which are vital to the livelihoods of many Cambodians.
+
+|       Clearance activities have led to a reduction in landmine-related incidents since 2010, but residual risks remain. The probability of injury, amputation, or death upon triggering a landmine is still considerable, with anti-personnel and anti-vehicle mines being the most dangerous. Continued clearance efforts and targeted public education are essential to reducing these threats further.
+
+|       In conclusion, while Cambodia has made progress in mitigating landmine risks, ongoing education, focused clearance in high-risk land-use areas, and resource optimization to protect communities and support economic development are still required.
+
+# Introduction
+
+|       With Cambodia rapid GDP growth since 1998 and high tourism rates (Wikipedia, n.d.), it is important for the land to be safe from any threats so that foreign direct investment (FDI) can proceed smoothly, and tourists feel safe to travel in the country. In this report, we will be investigating 2 datasets (landmine incidents <*mine.shp*> and fear level <*khm_blscontaminationp_gov_cmaa.shp*> by the mine clearing operators) in detail. 
+  
+|       In landmine incidents dataset, there are cases of landmine incidents, location of the incidents, type of mine and injury type (Injure, Amputation, Killed) recorded. As for fear level, there are landmine clearing operators records of mine clearing in each location with indication on the fear level, proximity of the landmine and land type.
+  
+|       With the above datasets, we hope to understand how mine clearing was done by the operators, possible type of mines found in the land, type of land use in the location. Since the result of the landmine incident dataset still shows some landmine found in 2013, we can propose possible insight on the correlation of landmines type and landuse to related parties for further education on detection.
+
+# Data Exploration
+
+|       Before proceeding with the study, we evaluated both datasets and found the following variables which may be used for our studies.
+
+|   *Both datasets:*
+1. **geometry** : This variable contains the longitude and latitude of the villages.
+2. **Province**, **District**, **Commune**, **Village** : Location of occurrences.
+3. **SurveyDate**, **Incident_D** : Date of survey and landmine/ERW incident date.
+
+|   *fear level dataset:*
+4. **Fear_Level** : landmine/ERW fear level in the location.
+5. **Proximity** : landmine/ERW proximity level.
+6. **Operator**: landmine/ERW clearing operators.
+
+|   *landmine/ERW incidents dataset:*
+7. **INJURE**, **AMPUTATION**, **KILLED** : landmine/ERW injury type and number of victims.
+8. **ERW_TYPE**, **MINE_TYPE** : Type of landmine/ERW (Anti-personal, fuse, etc)
+9. **LANDUSE** : Location type of land (Foraging area, Rice fields, etc)
+
+|       From the above variables, we will need to proceed with the following before being able to plot any graphs.
+
+1. To convert the *shp* files into dataframe by using `read_sf` function.
+2. Transform the geometry variables into lat-long coordinate system with
+   `st_transform`. With the coordinates, we will be able to plot choropleth maps 
+   easily on the location.
+3. In order to plot the Cambodia outline choropleth map, Province, District, 
+   Commune shapefiles were download from the Open Development Cambodia webpage.
+   (Open Development Cambodia, 2023) function like `st_read` is required to convert
+   the coordinates into dataframe (Cambodia_province, Cambodia_district, 
+   Cambodia_commune)
+4. Merge **ERW_TYPE** and **MINE_TYPE** variables using `coalesce` function.
+5. Convert **INJURE**, **AMPUTATION**, **KILLED** variables from wide format 
+   to long format.
+6. Split the date of **SurveyDate**, **Incident_D** in Year, Month, Day 
+   variables for easy calculation and charting.
+7. Removal of 1913 year record in fear level dataset because of outliner and 
+   limited data.
+
+|       In addition to the above actions, there are also some replacements in variables' records which will be covered in **Appendix 1**.
+```{r include=FALSE}
+
+# Load datasets with geometry in environment
+cambodia_fear.df <- read_sf(dsn = "./mine/khm_blscontaminationp_gov_cmaa.shp")
+cambodia_mine.df <- read_sf(dsn = "./fear/mine.shp")
+str(cambodia_mine.df) # Check data frame
+str(cambodia_fear.df) # Check data Frame
+
+# Transform the geometry into lat-long coordinate system
+cambodia_fear.df$geometry <-  st_transform(cambodia_fear.df$geometry,crs=4326)
+cambodia_mine.df$geometry <- st_transform(cambodia_mine.df$geometry,crs=4326)
+
+# Read Cambodia Province, District, Commune Map
+cambodia_province <- st_read("basemap_province.gpkg")
+cambodia_district <- st_read("basemap_district.gpkg")
+cambodia_commune <- st_read("basemap_commune.gpkg")
+
+# Merge ERW & Mine Type in one column
+cambodia_mine.dfe <- cambodia_mine.df %>%
+  mutate(TYPE = coalesce(ERW_TYPE,MINE_TYPE)) %>%
+  select(-c(ERW_TYPE, MINE_TYPE))
+
+# Convert Wide Format to Long Format
+cambodia_mine.dfl <- cambodia_mine.dfe %>% 
+  pivot_longer(cols=13:15, names_to="INJURY_TYPE", values_to="CASES")
+
+# Split Dates into Year, Month, Day
+cambodia_mine.dfle <- cambodia_mine.dfl %>%
+    mutate(Incident_D = as.Date(Incident_D), year=year(Incident_D), 
+           month=month(Incident_D), date = day(Incident_D))
+cambodia_fear.dfe <- cambodia_fear.df %>%
+    mutate(SurveyDate = as.Date(SurveyDate), year=year(SurveyDate), 
+           month=month(SurveyDate), date = day(SurveyDate))
+
+# Replace "(blank)" with Null in variables.
+cambodia_fear.dfe$Fear_Level <- 
+  gsub(pattern = "(blank)", replacement = NA,
+       x=cambodia_fear.dfe$Fear_Level, fixed = TRUE)
+cambodia_fear.dfe$Proximity <- 
+  gsub(pattern = "(blank)", replacement = NA,
+       x=cambodia_fear.dfe$Proximity, fixed = TRUE)
+cambodia_mine.dfle$Landuse <- 
+  gsub(pattern = "Unknown", replacement = NA,
+       x=cambodia_mine.dfle$Landuse, fixed = TRUE)
+cambodia_mine.dfle$TYPE <- 
+  gsub(pattern = "Unknown", replacement = NA,
+       x=cambodia_mine.dfle$TYPE, fixed = TRUE)
+
+# Set year and month as Integer
+cambodia_mine.dfle$year <- as.integer(cambodia_mine.dfle$year)
+cambodia_mine.dfle$month <- as.integer(cambodia_mine.dfle$month)
+cambodia_fear.dfe$year <- as.integer(cambodia_fear.dfe$year)
+cambodia_fear.dfe$month <- as.integer(cambodia_fear.dfe$month)
+
+# Verify class for each variables.
+str(cambodia_mine.dfle)
+str(cambodia_fear.dfe)
+head(cambodia_mine.dfle)
+head(cambodia_fear.dfe)
+
+# Drop rows which year is 1913
+cambodia_fear.dfe <- cambodia_fear.dfe[-which(cambodia_fear.dfe$year=="1913"),]
+```
+
+\pagebreak
+# History of Cambodia
+
+|       Even since the start of the Cambodia Civil War from 1967 to 1975, landmines had been used by all Cambodian factions to prevent advancement of troops in the region. In 1979 to prevent more Cambodia refugees to enter Thailand, Thai soldiers were stationed to shoot anyone who cross the no men's land border with landmine deployed. (Wikipedia, n.d.) Other than landmines, Explosive remnants of war (ERW) also remained in Cambodia grounds due to long history of wars which took place in the country.
+
+### K5 Plan
+
+|       After the Cambodian-Vietnamese War from 1978 to 1979, Khmer Rouge fled and regroup behind the Thai-Cambodian border. In order to their resurgence into Cambodia land, People's Republic of Kampuchea (PRK) triggered the K5 plan which included clearing the land to leave a foraging area along the Thailand border so that it can be watched and mined, (Wikipedia, n.d.) This plan did not deter Khmer Rouge from entering the country and created several social issues even until today.
+\pagebreak
+
+### Evidence of the landmine/ERW
+
+|       These landmines/ERW that are used during the Civil War and post-Khmer Rouge regime can still be seen in the below figure even in 2009 (30 years after the Civil War). From the figure, we observed that the major fear level is located in the north-western near the Thailand border which we can infer that those landmines/ERW have remained after the wars. Till 2013, there are still high fear level landmines detected in the regions. 
+```{r echo=FALSE}
+# To calculate the total number of observations by Village, Fear_level, year
+cambodia_fear.overallcheck <- cambodia_fear.dfe %>%
+  filter(year %in% c(2009,2013)) %>%
+  group_by(Village,Fear_Level,year) %>% # Group by variables sequentially.
+  summarize(N=n()) %>% #Count no of observations in each village, Fear Level, year
+  mutate(freq=N/sum(N), pct = round((freq*100),2))
+
+# Reorder factor levels to control legend order
+cambodia_fear.overallcheck$Fear_Level <- 
+    factor(cambodia_fear.overallcheck$Fear_Level,
+           levels=c("High","Medium","Low"))
+
+# To plot Choropleth map of Cambodia with Fear level
+cambodia_fear.overallcheck %>%
+  filter(Fear_Level %in% c("High", "Medium", "Low")) %>%
+  ggplot()+ 
+  geom_sf(data=cambodia_province)+    # Map Cambodia Province Base Map
+  geom_sf(mapping=aes(colour=Fear_Level, size=N))+
+  geom_rect(data=cambodia_fear.overallcheck %>% 
+            filter(Fear_Level %in% c("High", "Medium", "Low")), 
+            mapping = aes(xmin=102,xmax=105.5, ymin=12, ymax=14.5), alpha=0,
+            colour="maroon", size=2, inherherit.aes=FALSE)+    
+  facet_wrap(~year)+
+  labs(title="Mine can still be found despite clearing effort by Operators.", 
+       subtitle = "Cambodia Fear Level Comparison between 2009 and 2013",
+       captions ="Source : Open Cambodia Development",
+       x="Longtitude", y="Latitude")+
+  theme(legend.position = "bottom")
+
+```
+
+\pagebreak
+|       In the landmine incident datasets, we identify 2 major areas highlighted in the below figure in red and blue. Similar to fear level result above, most of the incidents occurred in the northwestern region near the Thailand border. There is also another area around Phnom Penh where several wars were fought. For example, Khmer Rouge took control of the province in 1975 and invasion of Vietnam from 1978 to 1979 into Cambodia and form rival government (PRK). We can estimate ERW might have remained on ground due to several wars and landmines were also deployed around the province during the wars. From the below figure, we can observe that despite operators' strong effort, there are still landmine/ERW incidents that occurred in 2013.
+```{r echo=FALSE}
+# To obtain centroid coordinates for each province and split into longitude and latitude.
+Cambodia.mainprovince <- cambodia_province %>%
+  st_centroid() %>%
+  mutate(long=st_coordinates(coords)[,1], lat=st_coordinates(coords)[,2])
+
+# Visualize the mine condition between 2005 and 2010 with indication of Siemreap, 
+# Phnom Penh
+cambodia_mine.dfle %>%
+  filter(year==c(2009,2013)) %>%
+  ggplot()+ 
+  geom_sf(data=cambodia_province)+    # Map Cambodia Province Base Map
+  geom_sf(mapping=aes(group=Landuse, colour=VICTIM, size=VICTIM))+
+  scale_size(guide="none")+ # Remove size legend
+  geom_rect(data=cambodia_mine.dfle %>% filter(year==c(2009,2013)), 
+            mapping = aes(xmin=102,xmax=105.5, ymin=12, ymax=14.5), alpha=0,
+            colour="maroon", size=2, inherherit.aes=FALSE)+  
+  geom_rect(data=cambodia_mine.dfle %>% filter(year==c(2009,2013)), 
+            mapping = aes(xmin=103.5,xmax=106.8, ymin=10.5, ymax=12.5), alpha=0,
+            colour="darkblue", size=2, inherherit.aes=FALSE)+  
+  geom_sf_label(data=Cambodia.mainprovince %>% 
+                filter(hrname %in% c("Siemreap", "Phnom Penh")), 
+                mapping=aes(x=long, y=lat, label=hrname),colour="black")+
+  facet_wrap(~year)+
+  scale_colour_gradient(low = "steelblue", high = "yellow")+
+  labs(title="There are significant decrease of victims in 5 years.", 
+      subtitle = "Cambodia Incident in 2009 & 2013",
+       captions ="Source : Open Cambodia Development",
+       x="Longtitude", y="Latitude")+
+  theme(legend.position = "bottom")
+
+```
+
+\pagebreak
+# Cambodia Fear Level from 2009 to 2012
+
+|       Based on the below figure from fear level dataset, we observed that several landmines/ERW were found in the 3 Provinces (Banteay Meanchey, "Battambang", "KAMPONG THOM") during the landmine Operator surveys. There was a sharp decrease in the landmines survey after 2012 when the landmine Operator completed most of the area in Cambodia. However, there are still bit of underlying landmines/ERW which are found in other smaller villages. 
+```{r echo=FALSE}
+
+# Construct Grouped Data by Province, year, Fear Level
+cambodia_fear_minepro <- cambodia_fear.dfe %>%
+    group_by(Province,year,Fear_Level) %>% #Group in sequence.
+    summarize(N=n()) %>% #Count no of observations in each Province, year, Fear Level
+    mutate(freq=N/sum(N), pct = round((freq*100),2))
+
+# Reorder factor levels to control legend order
+cambodia_fear_minepro$Fear_Level <- 
+    factor(cambodia_fear_minepro$Fear_Level,
+           levels=c("High", "Medium", "Low", "None", "NA"))
+
+# Plot of Province Fear Level
+cambodia_fear_minepro %>%
+  filter(year %in% c(2009:2012),N>150) %>%
+  ggplot(mapping=aes(x = reorder(Province,N), y = N, fill=Fear_Level, na.rm=TRUE))+
+  geom_col(alpha=0.2)+coord_flip()+
+  geom_col(data=cambodia_fear_minepro %>% 
+           filter(year %in% c(2009:2012),
+                  Province %in% c("BANTEAY MEANCHEY", "BATTAMBANG", "KAMPONG THOM")),
+           mapping=aes(x = reorder(Province,N), y = N, fill=Fear_Level, na.rm=TRUE))+
+  geom_rect(mapping = aes(xmin=8,xmax=12, ymin=0, ymax=3000),alpha=0,
+            colour="maroon", size=2, inherherit.aes=FALSE)+  
+  facet_wrap(~year)+
+  labs(title="Fear Level reduced significantly after 2011", 
+       subtitle =
+         "Province Fear Level from 2009 to 2012 with Occurence more than 150",
+       caption ="Source : Open Cambodia Development",
+       y="No of cases",x="Province")+
+  theme(legend.position = "bottom")
+
+```
+
+\pagebreak
+|       In the top 3 Province found with landmines, we observed that fear level in the provinces were generally Medium and High with 2 type of landmine proximity, Near and Very Near. The ratio of the Near proximity is generally higher than Very Near in both categories. This indicated that the damage of the landmines/ERW to the people who triggered it was still lethal. 
+
+```{r echo=FALSE}
+
+# Study on Top 3 Highest Fever Level Province 
+cambodia_fear.dfe.top3mine <- cambodia_fear.dfe %>%
+  filter(Province %in% c("BANTEAY MEANCHEY", "BATTAMBANG", "KAMPONG THOM"),
+         year %in% c(2009:2012)) %>%
+  group_by(year,Proximity,Fear_Level) %>% #Group in sequence.
+  summarize(N=n()) %>% #Count no of observations in each year,proximity,Fear Level
+  mutate(freq=N/sum(N), pct = round((freq*100),2))
+
+# To plot landmine/ERW proximity in the 3 fear level
+cambodia_fear.dfe.top3mine %>%
+  filter(N>10) %>%
+  ggplot(mapping=aes(x = year, y = N, fill=Proximity, na.rm=TRUE))+
+  geom_col(alpha=0.1)+
+  geom_col(data=cambodia_fear.dfe.top3mine %>% 
+           filter(Fear_Level %in% c("Medium", "High"), 
+                  Proximity %in% c("Near","Very Near")),
+           mapping=aes(x = year, y = N, fill=Proximity, na.rm=TRUE))+
+  geom_text_repel(data=cambodia_fear.dfe.top3mine %>% 
+                  filter(Fear_Level %in% c("Medium", "High"), 
+                         Proximity %in% c("Near","Very Near")),
+                  aes(x=year,y=N,label= paste0(round(pct,0),"%")),
+                      position="stack",vjust=2)+
+  facet_wrap(~factor(Fear_Level, c("Low", "Medium","High")))+
+  labs(title="LandMine/ERW Proximity are usually Near & Very Near Type", 
+       subtitle ="Top 3 Province Fear Level from 2009 to 2012",
+       captions ="Source : Open Cambodia Development",
+       x="Year",y="No of Survey")+
+  theme(legend.position = "bottom")
+
+```
+
+\pagebreak
+## Major Landmine Clearing Operators
+
+|   Based on the fear level dataset, there are four Operators assisting in the landmine/ERW clearing activities in Cambodia. From the below figure, CMAC and The HALO Trust are the main players in the clearing activities in Cambodia and their peak activities were in 2010. We estimated that these surveys were conducted near the Thai borders where most of the landmines are deployed.
+
+```{r echo=FALSE}
+# Operator Monthly Check Count
+cambodia_fear.checkcount <- cambodia_fear.dfe %>%
+  group_by(year,month,Operators) %>% # Group by variables in sequential
+  summarize(N=n()) %>% #Count no of observations in each group.
+  mutate(freq=N/sum(N), pct = round((freq*100),2))
+
+# Make year and month as Integer
+cambodia_fear.checkcount$year <- as.integer(cambodia_fear.checkcount$year)
+cambodia_fear.checkcount$month <- as.integer(cambodia_fear.checkcount$month)
+
+# Plot of Operators monthly checks
+cambodia_fear.checkcount %>%
+  filter(year %in% c(2009:2012)) %>%
+  ggplot(mapping=aes(x = month, y = N, fill=Operators, na.rm=TRUE))+
+  geom_col(alpha=0.2)+
+  geom_col(data=cambodia_fear.checkcount %>% 
+    filter(Operators %in% c("CMAC","THE HALO TRUST"),year %in% c(2009:2012)),
+    mapping=aes(x = month, y = N, fill=Operators, na.rm=TRUE))+
+  geom_text_repel(data=cambodia_fear.checkcount %>% 
+    filter(Operators %in% c("CMAC","THE HALO TRUST"),year %in% c(2010)),
+    mapping=aes(x = month, y = N,label= paste0(round(pct,0),"%")),
+    position="stack",hjust=0.6,vjust=0.2)+
+  facet_wrap(~year)+
+  scale_x_continuous(breaks= c(2,4,6,8,10,12))+
+  labs(title="Highest Surveys detected in 2010", 
+       subtitle ="Operators Checking Behaviour From 2009 to 2012",
+       captions ="Source : Open Cambodia Development",
+       x="Months",y="No of Surveys")+
+  theme(legend.position = "bottom")
+
+```
+
+\pagebreak
+### Cambodian Mine Action Centre (CMAC)
+
+|       CMAC, established in 1992, was one of the main organizations helping to make Cambodia land safe for residents in Cambodia and development. In the below figure, we observed that the main activities for CMAC was found in the northwestern of Cambodia and surveys were mostly finished in 2011. The focus was then shifted to another border of Cambodia as shown in 2012. One of the possible reasons for the shift in focus might be due to historical records of landmine/ERW incidents in 2005 where several injuries were found around Phnom Penh.
+  
+```{r echo=FALSE}
+# To check the surveys done by each Province, Operator, year
+cambodia_fear.check <- cambodia_fear.dfe %>%
+  group_by(Province,Operators,year) %>%    # Group by variables in sequence
+  summarize(N=n()) %>% #Count no of observations in each Province, Operators
+  mutate(freq=N/sum(N), pct = round((freq*100),2))
+
+# To plot the Choropleth map of CMAC activities
+cambodia_fear.check %>%
+  filter(year %in% c(2009:2012), Operators=="CMAC") %>%
+  ggplot()+ 
+  geom_sf(data=cambodia_province)+    # Map Cambodia Province Base Map
+      geom_sf(mapping=aes(colour=Operators, size=N))+
+  facet_wrap(~year)+
+  labs(title="Surveying is mostly around the border of Cambodia", 
+      subtitle = "Cambodian Mine Action Centre (CMAC) Movement from 2009 to 2012",
+       captions ="Source : Open Cambodia Development",
+       x="Longtitude", y="Latitude")+
+    scale_color_manual(values="maroon")+
+  theme(legend.position = "bottom")
+
+```
+
+\pagebreak
+### The HALO Trust (HALO)
+
+|       The HALO Trust is a global humanitarian non-government organisation which also helps to clear landmines left behind by wars and other conflicts. They also started their activities near the Thai border from Koh Kong to Preah Vihear and progressively move through the country based on locals' request calls. (The Halo Trust, n.d.) In the below figure, their activities were shifted through the country in the central region where the land can be used for the people livelihood after clearance.
+```{r echo=FALSE}
+# To plot the Choropleth map of The Halo Trust activities
+cambodia_fear.check %>%
+  filter(year %in% c(2009:2012), Operators=="THE HALO TRUST") %>%
+  ggplot()+ 
+  geom_sf(data=cambodia_province)+    # Map Cambodia Province Base Map
+      geom_sf(mapping=aes(colour=Operators, size=N))+
+  facet_wrap(~year)+
+  labs(title="Surveying through Cambodia as priority", 
+      subtitle = "The Halo Trust Movement from 2009 to 2012",
+       captions ="Source : Open Cambodia Development",
+       x="Longtitude", y="Latitude")+
+  scale_color_manual(values="darkblue")+
+  theme(legend.position = "bottom")
+```
+
+\pagebreak
+# Landmine/ERW incidents trend from 2005 to 2013
+
+|       In the below figure, we observed that there was a significant decrease in the landmine/ERW incidents after the Operators' clearance activities, but the ratio of the landmine/ERW effects is still similar between 2013 and 2005. This mean that there will still be 19% chance of amputation, 61% chance of injury or even 20% chance of get killed when triggered any landmine/ERW in 2013.
+```{r echo=FALSE}
+# Construct Grouped Data by year, Injury Type and calculate the percentage.
+cambodia_mine.consolidate <- cambodia_mine.dfle %>%
+    group_by(year, INJURY_TYPE) %>%
+    summarize(N = n(), subtotal = sum(CASES), .groups = 'drop') %>%
+    ungroup() %>%
+    group_by(INJURY_TYPE) %>%
+    mutate(Total_injury_type = sum(subtotal)) %>%   # Total by INJURY_TYPE
+    ungroup() %>%
+    group_by(year) %>%
+    mutate(Total_year = sum(subtotal),pct =round((subtotal/Total_year)*100,2))  
+
+# To plot Injury cases time series plot
+cambodia_mine.consolidate %>%
+  ggplot(mapping=aes(x=year, y=subtotal, group=INJURY_TYPE, 
+                     fill=INJURY_TYPE, na.rm=TRUE))+
+  geom_col()+
+  geom_text_repel(data=cambodia_mine.consolidate %>% filter(year %in% c(2005, 2013)),
+                  aes(x=year, y=subtotal,label= paste0(round(pct,0),"%")),
+                  position="stack",hjust=1,vjust=0.2)+
+  annotate("segment", x=2006, xend=2013, y=750, yend=250, 
+           colour="maroon", size=2, alpha=0.6, arrow=arrow(type="closed"))+
+  annotate("text", x = 2010, y=600, colour="maroon", 
+           label="Decrease in No of Injury Cases")+
+  scale_x_continuous(breaks = c(2005, 2007, 2009, 2011, 2013))+
+  labs(fill="Injury Type",
+       title="Injuries still occurred in 2013", 
+       subtitle ="Type of Injury Cases in Cambodia",
+       captions ="Source : Open Cambodia Development",
+       x="Year", y="No of Cases")+
+  theme(legend.position = "bottom")
+```
+
+\pagebreak
+### Popular Landmine/ERW area in Cambodia
+
+|       In order to effectively educate the people in Cambodia on possible danger area, we summarize all the landuse area where incidents occurred. In the below figure, there are 10 types of landmine/ERW found in Cambodia and top 3 most popular landuse types were Foraging area, Village or urban/built-up area, Rice Field. From the results, we can estimate that landmines were usually deployed at Foraging area and Rice field because of better line of sight of any enemies especially when explosion occurred, Fuse and Mortar rounds are found in Village or urban/built up area because of the ongoing prolong wars in the country.
+|       These locations were actually dangerous to the people of Cambodia because their livelihood depend on agriculture mainly. They might be exposed to high risk when managing the farms (Rice field) and have difficulty finding new areas for farming (Foraging area).
+
+```{r echo=FALSE, out.width="90%"}
+
+# Construct Grouped Data by Landuse, Type
+cambodia_mine_landuse <- cambodia_mine.dfle %>%
+    group_by(Landuse,TYPE) %>%  
+    summarize(N=n())
+
+# Plot Treemap on Injury Causes
+cambodia_mine_landuse %>%
+  filter(!is.na(TYPE)) %>%
+  ggplot(mapping=aes(area = N,fill = TYPE,label = paste0(Landuse,"\n",N)))+
+  geom_treemap()+
+  geom_treemap_text(colour="white",place="centre")+
+  labs(title="Foraging area has the most single type of mine deployed.", 
+       subtitle ="Type of Mines in Cambodia",
+       captions ="Source : Open Cambodia Development")+
+  theme(legend.position = "bottom")
+
+```
+
+### Top 3 Landuse Study
+
+|       In the below figure, anti-personal mines were used more in the foraging area, rice field than in the village or urban/buildup area. One of the possible reasons might be it is easier to  deploy in lesser people's environment and injuries on allies could be kept minimum. Another reason might be to reduce the watchout points where intruders who stepped on the landmine would be alarmed with explosion and easily spotted. Due to the open field condition of rice field where vehicles can advance easily, anti-vehicles mine could also be found to prevent quick advancement of troops. Lastly in order to prevent troops advancement and reduce troops quantity, area damage weapon mortars, fuses were usually used in the war and ERW of the shell and fuses might remain after the war end. All of these are dangerous when people touch or trigger it.
+```{r echo=FALSE}
+# Study on Top 3 Area With ERW/landMine Found
+cambodia_mine.dfle.top3 <- cambodia_mine.dfle %>%
+  filter(Landuse %in% c("Foraging area", "Village or urban/built-up area",
+         "Rice Field"))
+
+# Calculate the percentage of the Type in the top 3 landuse.
+cambodia_mine_top3prob <- cambodia_mine.dfle.top3 %>%
+    group_by(Landuse,TYPE) %>%  
+    summarize(N=n()) %>%
+    mutate(subtotal=sum(N),p=round((N/subtotal)*100,2))
+
+ # Plot Probability Bar Chart of mines found in top 3 landuse.
+cambodia_mine_top3prob %>%
+  ggplot(mapping=aes(x=Landuse,y=p, fill=TYPE))+
+  geom_col(alpha=0.2)+
+  geom_col(data=cambodia_mine_top3prob %>% filter(p>10),
+           mapping=aes(x=Landuse,y=p, fill=TYPE))+
+  geom_text_repel(data=cambodia_mine_top3prob %>% filter(p>10),
+                  aes(x=Landuse,y=p,label= paste0(TYPE,"\n",round(p,0),"%")),
+                      position="stack",vjust=1.2)+
+  labs(title="Anti-Personal/fuse mines are mostly found in these area.", 
+       subtitle ="Mines/ERW Deployed/Remain In Top 3 Landuse",
+       captions ="Source : Open Cambodia Development")+
+  theme(legend.position = "none")
+```
+
+### Injuries caused by major types of landmines/ERW
+
+|       In the below figure, 59% of the anti-personnel landmine triggered by victims will most likely be amputated. Depending on the distance to the landmine and the blast, they might even get killed within the blast proximity. The next dangerous landmine will be the anti-vehicle landmine which is larger than anti-personnel landmine and the blast radius is bigger. This resulted in 33% chance of victims to be killed when triggered it. As for the ERW, mortar, it had 26% chance of killing the victims because of high explosive blast in nature and it may be triggered unknowingly which make it more dangerous for people in Cambodia. Lastly, for fuse which is less explosive in general had 20% of amputation chance when triggered by the victims. 
+```{r echo=FALSE}
+# Calculate the ratio of landuse for each Province
+cambodia_mine.injury <- cambodia_mine.dfle %>%
+  filter(CASES!=0,TYPE!="NA") %>%
+  group_by(INJURY_TYPE,TYPE,CASES) %>%    # Group by each variable in sequence.
+  summarize(N=n()) %>% #Count no of observations in each group by Injury Type
+  mutate(subtotal=(N*CASES))
+
+# To combine duplicate rows of Type Variable and calculate the probability.
+cambodia_mine.injuryprob <- cambodia_mine.injury %>%
+  group_by(TYPE,INJURY_TYPE) %>%    # Group by each variable in sequence.
+  summarize(subtotal=sum(subtotal)) %>%
+  group_by(INJURY_TYPE) %>%
+  mutate(Total=sum(subtotal), pct =round((subtotal/Total)*100,2))
+
+# Plot possible injury based on each mine type.
+cambodia_mine.injuryprob %>%
+  ggplot(mapping=aes(x=INJURY_TYPE, y=pct, fill= TYPE))+
+  geom_col(alpha=0.5) +
+  geom_col(data=cambodia_mine.injuryprob %>% filter(pct>15),
+           mapping=aes())+
+  geom_text(data=cambodia_mine.injuryprob %>% filter(pct>15),
+            mapping=aes(label=paste0(TYPE,"\n",round(pct,0),"%")),
+            position="stack", vjust = 1.5)+
+  labs(title="Anti-personal mine will usually cause amputation.", 
+       subtitle ="Injuries Of Various Type of Mines",
+       captions ="Source : Open Cambodia Development",
+       x="Type of Injury", y="Probability")+
+  theme(legend.position="none")
+
+```
+
+\pagebreak
+### Type of landuse found in most Landmine/ERW Province (2005) 
+
+|         Since 2005 is one of the largest amounts of landmine/ERW incidents, we evaluate the top 3 province incidents during that year as a benchmark. From the below figure, we observed that the incidents occurred mostly at the Foraging area (32% to 50%), Village or Urban/built-up area (14% to 50%) and Rice field (9%). This mean that it is risky for people of Cambodia to search for food in the Foraging area, managed their rice field and wandered around in the village. 
+```{r echo=FALSE}
+# Calculate the ratio of landuse for each Province
+cambodia_mine.ratio <- cambodia_mine.dfle %>%
+  filter(year=="2005") %>%
+  group_by(Province,Landuse) %>%    # Group by each variable in sequence.
+  summarize(N=n()) %>% #Count no of observations in each Province, Landuse
+  mutate(freq=N/sum(N), pct = round((freq*100),2))
+
+# Plot landuse in each Province
+cambodia_mine.ratio %>%
+  ggplot(mapping=aes(x=Province, y=pct, fill= Landuse, group=Landuse))+
+  geom_col(alpha=0.2) + coord_flip()+
+  geom_col(data=cambodia_mine.ratio %>%
+                  filter(Province %in% c("Banteay Mean Chey","Battambang", 
+                                         "Kampong Thom"),
+                         Landuse %in% c("Foraging area", "Rice Field",
+                                       "Village or urban/built-up area")
+                         ),
+             mapping=aes())+
+  geom_text(data=cambodia_mine.ratio %>%
+                  filter(Province %in% c("Banteay Mean Chey","Battambang", 
+                                         "Kampong Thom"),
+                         Landuse %in% c("Foraging area", "Rice Field",
+                                       "Village or urban/built-up area")
+                         ),
+                  aes(label=paste0(round(pct,0),"%")),position="stack",
+                      hjust = 2)+
+  labs(title="Ratio of Foraging area were larger than Village or Rice field", 
+       subtitle ="Landuse in each Provinces (2005)",
+       captions ="Source : Open Cambodia Development",
+       x="Province", y="Percentage")+
+  theme(legend.position = "right")
+```
+
+\pagebreak
+### Sign of reduction in Landmine/ERW incidents
+
+|       As Agricultural activities are the main source of income in Cambodia, it is important to keep the land safe from any landmine/ERW. Luckily through the years of mine clearing by the Operators, we do see a great reduction in incidents in the below figure. However, we should not feel complacent about the result because there were still chance for the people of Cambodia to encounter landmine/ERW during their daily activities like farming or clearing the foraging area for agricultural activities or other development.
+  
+```{r echo=FALSE}
+# Visualize the mine condition between 2005 and 2010
+cambodia_mine.dfle.top3 %>%
+  filter(year==c(2005,2010)) %>%
+  ggplot()+ 
+  geom_sf(data=cambodia_province, alpha=0.2)+    # Map Cambodia Province Base Map
+  geom_sf(mapping=aes(colour=Landuse, size=VICTIM))+
+  facet_wrap(~year)+
+  labs(title="There are significant decrease of victims in 5 years.", 
+      subtitle = "Cambodia Incident in 2005 & 2010",
+       captions ="Source : Open Cambodia Development",
+       x="Longtitude", y="Latitude")+
+  theme(legend.position = "bottom")
+
+```
+
+\pagebreak
+### Landmine/ERW incidents still occured after 24 years
+
+|       The below figure showed landmine/ERW incidents still occurred in the 3 major landuse type (Foraging area, Rice field, Village/urban built-up area). This means that the country is still at risk of landmine/ERW incidents. With the inflow of foreign direct investment (FDI) in construction and real estate, rapid development of land will take place. Therefore, it is important for workers or people of Cambodia to learn how to live with the risk and understand the proper procedure on clearing one when they encountered it.
+```{r echo=FALSE}
+# Get centroid of Province for labeling.
+cambodia.coord <- cambodia_mine.dfle.top3 %>%
+  st_centroid() %>%
+  mutate(long= st_coordinates(geometry)[,1],lat=st_coordinates(geometry)[,2])
+
+# Select the specific province for label.
+select_province <- subset(cambodia.coord, 
+                          select=c(Province, long, lat, year, VICTIM)) %>%
+                    filter(year=="2013", !VICTIM =="0") %>%
+                    distinct(Province, .keep_all = TRUE)
+
+# Plot 2013 Cambodia Incident Map
+cambodia_mine.dfle.top3 %>%
+  filter(year==c(2013)) %>%
+  ggplot()+ 
+  geom_sf(data=cambodia_province, alpha=0.2)+    # Map Cambodia Province Base Map
+  geom_sf(mapping=aes(colour=Landuse, size=VICTIM))+
+  geom_text_repel(data=select_province,
+                  mapping=aes(x=long, y =lat,label= Province))+
+  theme(legend.position = "bottom")+
+  labs(title="There are still victims after 24 years.", 
+      subtitle = "Cambodia Incident in 2013",
+      captions ="Source : Open Cambodia Development",
+      x="Longtitude", y="Latitude")
+
+```
+
+\pagebreak
+# Conclusion
+
+|       The study reveals that while achieving a completely mine-free Cambodia is unlikely, several steps can be taken to mitigate the risks posed by landmines and ERW. First, continuous education of local communities is essential to help people recognize and respond to these threats, especially in high-risk areas. Public awareness campaigns and training should be tailored to different age groups to ensure maximum effectiveness.
+
+|       Operators should also prioritize clearance efforts in the top three land-use areas, particularly foraging areas, rice fields, and villages so as to safeguard livelihoods and support agricultural activities. Further improvement in landmine risk reduction can be achieved by incorporating demographic data into training programs, enabling more targeted safety education.
+
+|       Additionally, monitoring landmine incidents beyond 2013 can also help refine clearance strategies, allowing operators to focus resources more effectively and adjust their efforts based on emerging trends. This data-driven approach will optimize resource allocation and enhance the safety of communities across Cambodia.
+
+### RMarkdown File Attached Below
+
+
+\pagebreak
+# References
+
+|       Open Development Cambodia (2023) *Basic map of Cambodia (2014)* Retrieved 4th December 2023 from 
+https://data.opendevelopmentcambodia.net/dataset/administrative-boundaries-of-Cambodia-2014
+
+|       The Halo Trust (n.d.). *Cambodia* Retrieved from https://www.halotrust.org/where-we-work/south-asia/cambodia/
+
+|       Wikipedia (n.d.). *Economy of Cambodia* Retrieved 17th September 2024 from 
+https://en.wikipedia.org/wiki/Economy_of_Cambodia
+
+|       Wikipedia (n.d.). *K5 Plan* Retrieved 29th July 2024 from 
+https://en.wikipedia.org/wiki/K5_Plan
+ 
+|       Wikipedia (n.d.). *Land mines in Cambodia* Retrieved 14th February 2024 from 
+https://en.wikipedia.org/wiki/Land_mines_in_Cambodia
+
+
+\pagebreak
+# Appendix 1 : Data Cleaning Issues
+
+|       In order to preserve the coordinates in the datasets, we will need to import the shapefile into R with `read_sf` command below.
+
+```{r, echo=TRUE, results="hide"}
+# Load datasets with geometry in environment
+cambodia_fear.df <- read_sf(dsn = "./mine/khm_blscontaminationp_gov_cmaa.shp")
+cambodia_mine.df <- read_sf(dsn = "./fear/mine.shp")
+str(cambodia_mine.df) # Check data frame
+str(cambodia_fear.df) # Check data Frame
+```
+
+|       st_transform` was used to obtain the longitude and latitude from the geometry variables.
+
+```{r, echo=TRUE, results="hide"}
+# Transform the geometry into lat-long coordinate system
+cambodia_fear.df$geometry <-  st_transform(cambodia_fear.df$geometry,crs=4326)
+cambodia_mine.df$geometry <- st_transform(cambodia_mine.df$geometry,crs=4326)
+```
+
+|       To draw the country outline as Choropleth map, we need to `st_read` the shapefiles of province, district, commune obtained from Open Development Cambodia (2023) webpage. With the coordinates, we will be able to create the Cambodia base map with province, district, commune details.
+
+```{r, echo=TRUE, results="hide"}
+# Read Cambodia Province, District, Commune Map
+cambodia_province <- st_read("basemap_province.gpkg")
+cambodia_district <- st_read("basemap_district.gpkg")
+cambodia_commune <- st_read("basemap_commune.gpkg")
+```
+
+|       Since ERW_TYPE and MINE_TYPE belong to the same categories, we merge them into one variable as TYPE variable. It will be easier to plot any charts to understand which type of landmine/ERW injured the people of Cambodia.
+
+```{r, echo=TRUE, results="hide"}
+# Merge ERW & Mine Type in one column
+cambodia_mine.dfe <- cambodia_mine.df %>%
+  mutate(TYPE = coalesce(ERW_TYPE,MINE_TYPE)) %>%
+  select(-c(ERW_TYPE, MINE_TYPE))
+```
+
+|       Long format is usually preferred during plotting charts. Therefore, we have to use `pivot_longer` on mine dataset to combine different type of injury (AMPUTATION, INJURIED, KILLED) into one variable. In this way, it will be easier to plot any column chart.
+
+```{r, echo=TRUE, results="hide"}
+# Convert Wide Format to Long Format
+cambodia_mine.dfl <- cambodia_mine.dfe %>% 
+  pivot_longer(cols=13:15, names_to="INJURY_TYPE", values_to="CASES")
+```
+
+|       For easier time series plot, we will split the date variables into 3 variables (Year, Month, Day). In this way, we could easily call the required date variables for plotting any time series plot. On the safe side, we will define these variables as Integer to prevent any decimal points from occuring.
+
+```{r, echo=TRUE, results="hide"}
+# Split Dates into Year, Month, Day
+cambodia_mine.dfle <- cambodia_mine.dfl %>%
+    mutate(Incident_D = as.Date(Incident_D), year=year(Incident_D), 
+           month=month(Incident_D), date = day(Incident_D))
+cambodia_fear.dfe <- cambodia_fear.df %>%
+    mutate(SurveyDate = as.Date(SurveyDate), year=year(SurveyDate), 
+           month=month(SurveyDate), date = day(SurveyDate))
+
+# Set year and month as Integer
+cambodia_mine.dfle$year <- as.integer(cambodia_mine.dfle$year)
+cambodia_mine.dfle$month <- as.integer(cambodia_mine.dfle$month)
+cambodia_fear.dfe$year <- as.integer(cambodia_fear.dfe$year)
+cambodia_fear.dfe$month <- as.integer(cambodia_fear.dfe$month)
+```
+
+|       Once all the datasets are arranged properly, we will need to review the class type of each variable and search for any missing or wrong data in the records of the variables. The commands below were used to check the class type and some of the records for both datasets. Sometimes, weird records might be short during `str()` check.
+
+```{r, echo=TRUE, results="hide"}
+# Verify class for each variables.
+str(cambodia_mine.dfle)
+str(cambodia_fear.dfe)
+head(cambodia_mine.dfle)
+head(cambodia_fear.dfe)
+```
+
+|       During data checking, we found "(blank)", "Unknown" records in some of the variables and will perform `gsub()` to replace it to "NA" for easier identification. We also remove the row which year is 1913 because there are insufficient similar records in the dataset and it will be treated as outliner during any plotting of the charts. As country knowledge is required for replacing any NA records correctly and the NA records are small sample size, we will not take any actions in this study.
+
+```{r, echo=TRUE, results="hide"}
+# Replace "(blank)" with Null in variables.
+cambodia_fear.dfe$Fear_Level <- 
+  gsub(pattern = "(blank)", replacement = NA,
+       x=cambodia_fear.dfe$Fear_Level, fixed = TRUE)
+cambodia_fear.dfe$Proximity <- 
+  gsub(pattern = "(blank)", replacement = NA,
+       x=cambodia_fear.dfe$Proximity, fixed = TRUE)
+cambodia_mine.dfle$Landuse <- 
+  gsub(pattern = "Unknown", replacement = NA,
+       x=cambodia_mine.dfle$Landuse, fixed = TRUE)
+cambodia_mine.dfle$TYPE <- 
+  gsub(pattern = "Unknown", replacement = NA,
+       x=cambodia_mine.dfle$TYPE, fixed = TRUE)
+# Drop row which year is 1913
+cambodia_fear.dfe <- cambodia_fear.dfe[-which(cambodia_fear.dfe$year=="1913"),]
+```
+
+|       In order to plot any column chart with percentage, we will need to tabulate the results in a newly constructed dataframe before any chart can be plotted. In the below code, we perform 2 group_by so that we can summarize by year and Injury_Type with no duplicate records. After subtotals were obtained for each Injury_type, we will be able to calculate the percentage against the year total.
+
+```{r, echo=TRUE, results="hide"}
+# Construct Grouped Data by year, Injury Type and calculate the percentage.
+cambodia_mine.consolidate <- cambodia_mine.dfle %>%
+    group_by(year, INJURY_TYPE) %>%
+    summarize(N = n(), subtotal = sum(CASES), .groups = 'drop') %>%
+    ungroup() %>%
+    group_by(INJURY_TYPE) %>%
+    mutate(Total_injury_type = sum(subtotal)) %>%   # Total by INJURY_TYPE
+    ungroup() %>%
+    group_by(year) %>%
+    mutate(Total_year = sum(subtotal),pct =round((subtotal/Total_year)*100,2)) 
+```
+
+\pagebreak
+# Appendix 2 : RMarkdown Session Information
+
+```{r echo=TRUE}
+sessionInfo()
+```
+
+
