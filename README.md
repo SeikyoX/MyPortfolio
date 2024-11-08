@@ -8,7 +8,7 @@ Please see my Completed Data Analytics Projects below.
   *Description*: This is a Shiny dashboard to showcase Shopper Profile in Singapore.<br>
   *Software* : R
 
-- **[The Legacy of Civil War:Landmines, ERWs, and Their Effects on Cambodian Communities](https://your-shiny-app2-url.com)**  
+- **[The Legacy of Civil War:Landmines, ERWs, and Their Effects on Cambodian Communities](https://github.com/SeikyoX/MyPortfolio/blob/main/CambodiaMine/CambodiaMine.html)**  
   *Description*: This is a R Markdown Generated Report On Cambodia Mine Analysis.<br>
   *Software* : R
   
