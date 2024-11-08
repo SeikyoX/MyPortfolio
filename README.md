@@ -5,12 +5,12 @@ Please see my Completed Data Analytics Projects below.
 ## 2024
 
 - **[Shopper Profile](https://seikyo.shinyapps.io/ShopperProfile/)**  
-  *Description*: This is a Shiny dashboard to showcase Shopper Profile in Singapore.\
-  *Software Used* : R
+  *Description*: This is a Shiny dashboard to showcase Shopper Profile in Singapore.<br>
+  *Software* : R
 
 - **[The Legacy of Civil War:Landmines, ERWs, and Their Effects on Cambodian Communities](https://your-shiny-app2-url.com)**  
-  *Description*: This is a R Markdown Generated Report On Cambodia Mine Analysis.\
-  *Software Used* : R
+  *Description*: This is a R Markdown Generated Report On Cambodia Mine Analysis.<br>
+  *Software* : R
   
 ## 2023
 
