@@ -17,47 +17,47 @@ Please see my Completed Data Analytics Projects below.
 ## 2023 **-Under Construction-**
 
 - **[Shiny App 3](https://your-shiny-app3-url.com)**  
-  *Description*: This app simulates different outcomes for datasets based on various parameters.
+  *Description*: This app simulates different outcomes for datasets based on various parameters. <br>
   *Software* : R <br>
   *Script* : [Link](...)
 
 - **[Shiny App 3](https://your-shiny-app3-url.com)**  
-  *Description*: This app simulates different outcomes for datasets based on various parameters.
+  *Description*: This app simulates different outcomes for datasets based on various parameters. <br>
   *Software* : R <br>
   *Script* : [Link](...)
 
 ## 2022 **-Under Construction-**
 
 - **[Shiny App 4](https://your-shiny-app4-url.com)**  
-  *Description*: A Shiny app built for analyzing historical stock market data.
+  *Description*: A Shiny app built for analyzing historical stock market data. <br>
   *Software* : R <br>
   *Script* : [Link](...)
 
 - **[Shiny App 4](https://your-shiny-app4-url.com)**  
-  *Description*: A Shiny app built for analyzing historical stock market data.
+  *Description*: A Shiny app built for analyzing historical stock market data. <br>
   *Software* : R <br>
   *Script* : [Link](...)
 
 ## 2021 **-Under Construction-**
 
 - **[Shiny App 4](https://your-shiny-app4-url.com)**  
-  *Description*: A Shiny app built for analyzing historical stock market data.
+  *Description*: A Shiny app built for analyzing historical stock market data. <br>
   *Software* : R <br>
   *Script* : [Link](...)
 
 - **[Shiny App 4](https://your-shiny-app4-url.com)**  
-  *Description*: A Shiny app built for analyzing historical stock market data.
+  *Description*: A Shiny app built for analyzing historical stock market data. <br>
   *Software* : R <br>
   *Script* : [Link](...)
 
 ## 2020 **-Under Construction-**
 
 - **[Shiny App 4](https://your-shiny-app4-url.com)**  
-  *Description*: A Shiny app built for analyzing historical stock market data.
+  *Description*: A Shiny app built for analyzing historical stock market data. <br>
   *Software* : R <br>
   *Script* : [Link](...)
 
 - **[Shiny App 4](https://your-shiny-app4-url.com)**  
-  *Description*: A Shiny app built for analyzing historical stock market data.
+  *Description*: A Shiny app built for analyzing historical stock market data. <br>
   *Software* : R <br>
   *Script* : [Link](...)
