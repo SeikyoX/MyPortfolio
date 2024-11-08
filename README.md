@@ -21,7 +21,7 @@ Please see my Completed Data Analytics Projects below.
   *Software* : R <br>
   *Script* : [Link](...)
 
-  - **[Shiny App 3](https://your-shiny-app3-url.com)**  
+- **[Shiny App 3](https://your-shiny-app3-url.com)**  
   *Description*: This app simulates different outcomes for datasets based on various parameters.
   *Software* : R <br>
   *Script* : [Link](...)
@@ -33,7 +33,7 @@ Please see my Completed Data Analytics Projects below.
   *Software* : R <br>
   *Script* : [Link](...)
 
-  - **[Shiny App 4](https://your-shiny-app4-url.com)**  
+- **[Shiny App 4](https://your-shiny-app4-url.com)**  
   *Description*: A Shiny app built for analyzing historical stock market data.
   *Software* : R <br>
   *Script* : [Link](...)
@@ -45,7 +45,7 @@ Please see my Completed Data Analytics Projects below.
   *Software* : R <br>
   *Script* : [Link](...)
 
-  - **[Shiny App 4](https://your-shiny-app4-url.com)**  
+- **[Shiny App 4](https://your-shiny-app4-url.com)**  
   *Description*: A Shiny app built for analyzing historical stock market data.
   *Software* : R <br>
   *Script* : [Link](...)
@@ -57,7 +57,7 @@ Please see my Completed Data Analytics Projects below.
   *Software* : R <br>
   *Script* : [Link](...)
 
-  - **[Shiny App 4](https://your-shiny-app4-url.com)**  
+- **[Shiny App 4](https://your-shiny-app4-url.com)**  
   *Description*: A Shiny app built for analyzing historical stock market data.
   *Software* : R <br>
   *Script* : [Link](...)
