@@ -16,48 +16,48 @@ Please see my Completed Data Analytics Projects below.
   
 ## 2023 **-Under Construction-**
 
-- **[Shiny App 3](https://your-shiny-app3-url.com)**  
-  *Description*: This app simulates different outcomes for datasets based on various parameters. <br>
-  *Software* : R <br>
+- **[US Universities Ranking, Tuition Fee and Enrollment](https://your-shiny-app3-url.com)**  
+  *Description*: : Use Data Visualization Tool to find relationship between US Universities ranking, tuition fee and enrollment. <br>
+  *Software* : Tableau <br>
   *Script* : [Link](...)
 
-- **[Shiny App 3](https://your-shiny-app3-url.com)**  
-  *Description*: This app simulates different outcomes for datasets based on various parameters. <br>
-  *Software* : R <br>
+- **[Stock Prices Dataset Analysis](https://your-shiny-app3-url.com)**  
+  *Description*: Analysis of stock prices dataset with various analytics method (MAPE, MSD, MAD and ARIMA) and provide the future forecast. <br>
+  *Software* : SAS, Microsoft Excel <br>
   *Script* : [Link](...)
 
 ## 2022 **-Under Construction-**
 
-- **[Shiny App 4](https://your-shiny-app4-url.com)**  
-  *Description*: A Shiny app built for analyzing historical stock market data. <br>
-  *Software* : R <br>
+- **[Application Of Text Mining On Hotel Market Intelligence](https://your-shiny-app4-url.com)**  
+  *Description*: Apply Text Mining on company review to obtain insights and propose potential actions. <br>
+  *Software* : SPSS <br>
   *Script* : [Link](...)
 
-- **[Shiny App 4](https://your-shiny-app4-url.com)**  
-  *Description*: A Shiny app built for analyzing historical stock market data. <br>
-  *Software* : R <br>
+- **[ShineBank Credit Card Churn Analysis](https://your-shiny-app4-url.com)**  
+  *Description*: Using Predictive Modelling on a bank dataset to understand the incidence of credit card churn cluster profile and make recommendations. <br>
+  *Software* : SPSS <br>
   *Script* : [Link](...)
 
 ## 2021 **-Under Construction-**
 
-- **[Shiny App 4](https://your-shiny-app4-url.com)**  
-  *Description*: A Shiny app built for analyzing historical stock market data. <br>
-  *Software* : R <br>
+- **[House Price Analysis](https://your-shiny-app4-url.com)**  
+  *Description*: Using Regression Modelling on home selling price dataset to understand the relationship between selling price, living area, number of beds, bathrooms. <br>
+  *Software* : JMP <br>
   *Script* : [Link](...)
 
-- **[Shiny App 4](https://your-shiny-app4-url.com)**  
-  *Description*: A Shiny app built for analyzing historical stock market data. <br>
-  *Software* : R <br>
+- **[Online Shoppers Purchasing Intention](https://your-shiny-app4-url.com)**  
+  *Description*: : Using Predictive Modelling on Online Customer Dataset to generate an appropriate decision tree models for deployment. <br>
+  *Software* : SPSS <br>
   *Script* : [Link](...)
 
 ## 2020 **-Under Construction-**
 
-- **[Shiny App 4](https://your-shiny-app4-url.com)**  
-  *Description*: A Shiny app built for analyzing historical stock market data. <br>
-  *Software* : R <br>
+- **[Pittsburgh Bike Share Analysis](https://your-shiny-app4-url.com)**  
+  *Description*: Using different clustering methods to obtain Insight from a bike sharing dataset and finding ways to increase ridership. <br>
+  *Software* : SPSS <br>
   *Script* : [Link](...)
 
-- **[Shiny App 4](https://your-shiny-app4-url.com)**  
-  *Description*: A Shiny app built for analyzing historical stock market data. <br>
-  *Software* : R <br>
+- **[Chronic Kidney Disease (CKD) Symptoms Prediction](https://your-shiny-app4-url.com)**  
+  *Description*: Using Clustering method to segment the patients' demographics and various health screening tests to help identify groups of patients that might highly have risk of being diagnosed with CKD. <br>
+  *Software* : SPSS <br>
   *Script* : [Link](...)
