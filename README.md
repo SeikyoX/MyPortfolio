@@ -16,7 +16,7 @@ Please see my Completed Data Analytics Projects below.
   
 ## 2023 **-Under Construction-**
 
-- **[US Universities Ranking, Tuition Fee and Enrollment](https://your-shiny-app3-url.com)**  
+- **[US Universities Ranking, Tuition Fee and Enrollment](https://seikyox.github.io/MyPortfolio/US%20Universities%20Ranking%20Tuition%20Fee%20and%20Enrollment.htm)**  
   *Description*: : Use Data Visualization Tool to find relationship between US Universities ranking, tuition fee and enrollment. <br>
   *Software* : Tableau <br>
   *Script* : [Link](https://github.com/SeikyoX/MyPortfolio/tree/main/US%20Universities%20Ranking%20Tuition%20Fee%20and%20Enrollment.htm) <br>
