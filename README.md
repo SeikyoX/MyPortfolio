@@ -35,10 +35,10 @@ Please see my Completed Data Analytics Projects below.
   *Software* : SPSS <br>
   *Script* : [Link](...)
 
-- **[ShineBank Credit Card Churn Analysis](https://your-shiny-app4-url.com)**  
+- **[ShineBank Credit Card Churn Analysis](https://github.com/SeikyoX/MyPortfolio/tree/main/ShineBank/ShineBank.pdf)**  
   *Description*: Using Predictive Modelling on a bank dataset to understand the incidence of credit card churn cluster profile and make recommendations. <br>
   *Software* : SPSS <br>
-  *Script* : [Link](...)
+  *Script* : [Link](https://github.com/SeikyoX/MyPortfolio/tree/main/ShineBank)
 
 ## 2021 **-Under Construction-**
 
