@@ -19,7 +19,7 @@ Please see my Completed Data Analytics Projects below.
 - **[US Universities Ranking, Tuition Fee and Enrollment](https://seikyox.github.io/MyPortfolio/US%20Universities%20Ranking%20Tuition%20Fee%20and%20Enrollment.htm)**  
   *Description*: : Use Data Visualization Tool to find relationship between US Universities ranking, tuition fee and enrollment. <br>
   *Software* : Tableau <br>
-  *Script* : [Link](https://github.com/SeikyoX/MyPortfolio/tree/main/US%20Universities%20Ranking%20Tuition%20Fee%20and%20Enrollment%20files) <br>
+  *Script* : [Link](https://github.com/SeikyoX/MyPortfolio/tree/main/US%20Universities%20Ranking%20Tuition%20Fee%20and%20Enrollment_files) <br>
   ![Universities Undergrad Enrollment Overview](US%20Universities%20Dashbpard%2001.jpg) <br>
   ![Universities Tuition And Fee Overview](US%20Universities%20Dashbpard%2002.jpg) <br>
 
