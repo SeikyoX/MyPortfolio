@@ -54,7 +54,7 @@ Please see my Completed Data Analytics Projects below.
 
 ## 2020
 
-- **[Pittsburgh Bike Share Analysis]([https://seikyox.github.io/MyPortfolio/PittsburghBikeShareAnalysis.pdf)**  
+- **[Pittsburgh Bike Share Analysis](https://github.com/SeikyoX/MyPortfolio/tree/main/PittsburghBikeShareAnalysis.pdf)**
   *Description*: Using different clustering methods to obtain Insight from a bike sharing dataset and finding ways to increase ridership. <br>
   *Software* : SPSS <br>
   *Script* : [Link](https://github.com/SeikyoX/MyPortfolio/tree/main/PittsburghBikeShareAnalysis_files)
