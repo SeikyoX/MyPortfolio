@@ -19,7 +19,9 @@ Please see my Completed Data Analytics Projects below.
 - **[US Universities Ranking, Tuition Fee and Enrollment](https://your-shiny-app3-url.com)**  
   *Description*: : Use Data Visualization Tool to find relationship between US Universities ranking, tuition fee and enrollment. <br>
   *Software* : Tableau <br>
-  *Script* : [Link](...)
+  *Script* : [Link](https://github.com/SeikyoX/MyPortfolio/tree/main/US Universities Ranking Tuition Fee and Enrollment.htm) <br>
+  ![Universities Undergrad Enrollment Overview](US Universities Dashbpard 01.jpg) <br>
+  ![Universities Tuition And Fee Overview](US Universities Dashbpard 02.jpg) <br>
 
 - **[Stock Prices Dataset Analysis](https://your-shiny-app3-url.com)**  
   *Description*: Analysis of stock prices dataset with various analytics method (MAPE, MSD, MAD and ARIMA) and provide the future forecast. <br>
