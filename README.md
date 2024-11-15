@@ -14,7 +14,7 @@ Please see my Completed Data Analytics Projects below.
   *Software* : R <br>
   *Script* : [Link](https://github.com/SeikyoX/MyPortfolio/tree/main/CambodiaMine)
   
-## 2023 **-Under Construction-**
+## 2023 
 
 - **[US Universities Ranking, Tuition Fee and Enrollment](https://github.com/SeikyoX/MyPortfolio/tree/main/USUniversities/USUniversitiesRankingTuitionFeeandEnrollment.pdf)**  
   *Description*: : Use Data Visualization Tool to find relationship between US Universities ranking, tuition fee and enrollment. <br>
@@ -23,10 +23,10 @@ Please see my Completed Data Analytics Projects below.
   ![Universities Undergrad Enrollment Overview](US%20Universities%20Dashbpard%2001.jpg) <br>
   ![Universities Tuition And Fee Overview](US%20Universities%20Dashbpard%2002.jpg) <br>
 
-- **[Stock Prices Dataset Analysis](https://your-shiny-app3-url.com)**  
+- **[Stock Prices Dataset Analysis](https://github.com/SeikyoX/MyPortfolio/tree/main/StockPrice/StockPrice.pdf)**  
   *Description*: Analysis of stock prices dataset with various analytics method (MAPE, MSD, MAD and ARIMA) and provide the future forecast. <br>
   *Software* : SAS, Microsoft Excel <br>
-  *Script* : [Link](...)
+  *Script* : [Link](https://github.com/SeikyoX/MyPortfolio/tree/main/StockPrice)
 
 ## 2022 
 
