@@ -8,6 +8,7 @@ Please see my Completed Data Analytics Projects below.
   *Description*: This is a Shiny dashboard to showcase Shopper Profile in Singapore. <br>
   *Software* : R, SQL, Python <br>
   *Script* : [Link](https://github.com/SeikyoX/MyPortfolio/tree/main/ShopperProfile) <br>
+  <br>
   ![Shopper Profile Dashboard Screenshot](ShopperProfileDashboard.jpg) <br>
 
 - **[The Legacy of Civil War:Landmines, ERWs, and Their Effects on Cambodian Communities](https://rpubs.com/seikyox/1242723)**  
