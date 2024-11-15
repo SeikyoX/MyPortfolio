@@ -28,12 +28,12 @@ Please see my Completed Data Analytics Projects below.
   *Software* : SAS, Microsoft Excel <br>
   *Script* : [Link](...)
 
-## 2022 **-Under Construction-**
+## 2022 
 
-- **[Application Of Text Mining On Hotel Market Intelligence](https://your-shiny-app4-url.com)**  
+- **[Application Of Text Mining On Hotel Market Intelligence](https://github.com/SeikyoX/MyPortfolio/tree/main/HotelMarketIntel/HotelMarketIntel.pdf)**  
   *Description*: Apply Text Mining on company review to obtain insights and propose potential actions. <br>
   *Software* : SPSS <br>
-  *Script* : [Link](...)
+  *Script* : [Link](https://github.com/SeikyoX/MyPortfolio/tree/main/HotelMarketIntel)
 
 - **[ShineBank Credit Card Churn Analysis](https://github.com/SeikyoX/MyPortfolio/tree/main/ShineBank/ShineBank.pdf)**  
   *Description*: Using Predictive Modelling on a bank dataset to understand the incidence of credit card churn cluster profile and make recommendations. <br>
