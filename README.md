@@ -40,12 +40,12 @@ Please see my Completed Data Analytics Projects below.
   *Software* : SPSS <br>
   *Script* : [Link](https://github.com/SeikyoX/MyPortfolio/tree/main/ShineBank)
 
-## 2021 **-Under Construction-**
+## 2021 
 
-- **[House Price Analysis](https://your-shiny-app4-url.com)**  
+- **[House Price Analysis](https://github.com/SeikyoX/MyPortfolio/tree/main/HousePrice/HousePrice.pdf)**  
   *Description*: Using Regression Modelling on home selling price dataset to understand the relationship between selling price, living area, number of beds, bathrooms. <br>
   *Software* : JMP <br>
-  *Script* : [Link](...)
+  *Script* : [Link](https://github.com/SeikyoX/MyPortfolio/tree/main/HousePrice)
 
 - **[Online Shoppers Purchasing Intention](https://github.com/SeikyoX/MyPortfolio/tree/main/OnlineShoppers/OnlineShoppers.pdf)**  
   *Description*: : Using Predictive Modelling on Online Customer Dataset to generate an appropriate decision tree models for deployment. <br>
