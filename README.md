@@ -7,7 +7,8 @@ Please see my Completed Data Analytics Projects below.
 - **[Shopper Profile](https://seikyo.shinyapps.io/ShopperProfile/)**  
   *Description*: This is a Shiny dashboard to showcase Shopper Profile in Singapore. <br>
   *Software* : R, SQL, Python <br>
-  *Script* : [Link](https://github.com/SeikyoX/MyPortfolio/tree/main/ShopperProfile)
+  *Script* : [Link](https://github.com/SeikyoX/MyPortfolio/tree/main/ShopperProfile) <br>
+  ![Shopper Profile Dashboard Screenshot](ShopperProfileDashboard.jpg) <br>
 
 - **[The Legacy of Civil War:Landmines, ERWs, and Their Effects on Cambodian Communities](https://rpubs.com/seikyox/1242723)**  
   *Description*: This is a R Markdown Generated Report On Cambodia Mine Analysis. <br>
@@ -20,8 +21,8 @@ Please see my Completed Data Analytics Projects below.
   *Description*: : Use Data Visualization Tool to find relationship between US Universities ranking, tuition fee and enrollment. <br>
   *Software* : Tableau <br>
   *Script* : [Link](https://github.com/SeikyoX/MyPortfolio/tree/main/USUniversities) <br>
-  ![Universities Undergrad Enrollment Overview](US%20Universities%20Dashbpard%2001.jpg) <br>
-  ![Universities Tuition And Fee Overview](US%20Universities%20Dashbpard%2002.jpg) <br>
+  ![Universities Undergrad Enrollment Dashboard Screenshot](USUniDashboard01.jpg) <br>
+  ![Universities Tuition And Fee Dashboard Screenshot](USUniDashboard02.jpg) <br>
 
 - **[Stock Prices Dataset Analysis](https://github.com/SeikyoX/MyPortfolio/tree/main/StockPrice/StockPrice.pdf)**  
   *Description*: Analysis of stock prices dataset with various analytics method (MAPE, MSD, MAD and ARIMA) and provide the future forecast. <br>
