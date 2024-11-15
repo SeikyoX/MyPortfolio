@@ -54,10 +54,10 @@ Please see my Completed Data Analytics Projects below.
 
 ## 2020
 
-- **[Pittsburgh Bike Share Analysis](https://github.com/SeikyoX/MyPortfolio/tree/main/PittsburghBikeShareAnalysis.pdf)**
+- **[Pittsburgh Bike Share Analysis](https://github.com/SeikyoX/MyPortfolio/tree/main/PittsburghBikeShareAnalysis/PittsburghBikeShareAnalysis.pdf)**
   *Description*: Using different clustering methods to obtain Insight from a bike sharing dataset and finding ways to increase ridership. <br>
   *Software* : SPSS <br>
-  *Script* : [Link](https://github.com/SeikyoX/MyPortfolio/tree/main/PittsburghBikeShareAnalysis_files)
+  *Script* : [Link](https://github.com/SeikyoX/MyPortfolio/tree/main/PittsburghBikeShareAnalysis)
 
 - **[Chronic Kidney Disease (CKD) Symptoms Prediction](https://seikyox.github.io/MyPortfolio/ChronicKidneyDisease.htm)**  
   *Description*: Using Clustering method to segment the patients' demographics and various health screening tests to help identify groups of patients that might highly have risk of being diagnosed with CKD. <br>
