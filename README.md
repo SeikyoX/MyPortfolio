@@ -59,7 +59,7 @@ Please see my Completed Data Analytics Projects below.
   *Software* : SPSS <br>
   *Script* : [Link](...)
 
-- **[Chronic Kidney Disease (CKD) Symptoms Prediction](https://your-shiny-app4-url.com)**  
+- **[Chronic Kidney Disease (CKD) Symptoms Prediction]([https://your-shiny-app4-url.com](https://seikyox.github.io/MyPortfolio/ChronicKidneyDisease.htm))**  
   *Description*: Using Clustering method to segment the patients' demographics and various health screening tests to help identify groups of patients that might highly have risk of being diagnosed with CKD. <br>
   *Software* : SPSS <br>
-  *Script* : [Link](...)
+  *Script* : [Link](https://github.com/SeikyoX/MyPortfolio/tree/main/ChronicKidneyDisease_files)
