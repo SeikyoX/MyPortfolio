@@ -47,10 +47,10 @@ Please see my Completed Data Analytics Projects below.
   *Software* : JMP <br>
   *Script* : [Link](...)
 
-- **[Online Shoppers Purchasing Intention](https://your-shiny-app4-url.com)**  
+- **[Online Shoppers Purchasing Intention](https://github.com/SeikyoX/MyPortfolio/tree/main/OnlineShoppers/OnlineShoppers.pdf))**  
   *Description*: : Using Predictive Modelling on Online Customer Dataset to generate an appropriate decision tree models for deployment. <br>
   *Software* : SPSS <br>
-  *Script* : [Link](...)
+  *Script* : [Link](https://github.com/SeikyoX/MyPortfolio/tree/main/OnlineShoppers)
 
 ## 2020
 
