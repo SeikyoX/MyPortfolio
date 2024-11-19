@@ -6,7 +6,7 @@ Please see my Completed Data Analytics Projects below.
 
 - **[Shopper Profile](https://seikyo.shinyapps.io/ShopperProfile/)**  
   *Description*: This is a Shiny dashboard to showcase Shopper Profile in Singapore. <br>
-  *Software* : R, SQL, Python <br>
+  *Software* : R(Data Analysis), SQL(Data Wrangling) , Python(Import Excel to SQL Server) <br>
   *Script* : [Link](https://github.com/SeikyoX/MyPortfolio/tree/main/ShopperProfile) <br>
   <br>
   ![Shopper Profile Dashboard Screenshot](ShopperProfileDashboard.jpg) <br>
